@@ -1,3 +1,4 @@
+import { FaEdit, FaWindowClose } from 'react-icons/fa';
 import styled from 'styled-components';
 
 export const AlunoContainer = styled.div`
@@ -21,6 +22,10 @@ export const ProfilePicture = styled.div`
   }
 `;
 
-export const colorIcon = styled.div`
-  color: #aa1111;
+export const StyledFaEdit = styled(FaEdit)`
+  color: #eeee44;
+`;
+
+export const StyledFaWindowClose = styled(FaWindowClose)`
+  color: #ee1111;
 `;
