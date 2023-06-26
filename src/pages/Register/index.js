@@ -6,11 +6,13 @@ import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
 import axios from '../../services/axios';
 import history from '../../services/history';
+import Loading from '../../components/Loading';
 
 export default function Login() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -33,6 +35,8 @@ export default function Login() {
 
     if (formErrors) return;
 
+    setIsLoading(true);
+
     try {
       await axios.post('/users/', {
         nome,
@@ -40,15 +44,19 @@ export default function Login() {
         email,
       });
       toast.success('Você foi cadastrado');
+      setIsLoading(false);
       history.push('/login');
     } catch (error) {
       const errors = get(error, 'response.data.errors', []);
       errors.map((element) => toast.error(element));
+      setIsLoading(false);
     }
   }
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
+
       <h1>Crie sua Conta</h1>
       <h1>
         {nome} {email} {password}
