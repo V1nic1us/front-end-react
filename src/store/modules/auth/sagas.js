@@ -19,13 +19,13 @@ function* loginRequest({ payload }) {
   }
 }
 
-// function persistRehydrate({ payload }) {
-//   const token = get(payload, 'auth.token', '');
-//   if (!token) return;
-//   axios.defaults.headers.Authorization = `Bearer ${token}`;
-// }
+function persistRehydrate({ payload }) {
+  const token = get(payload, 'auth.token', '');
+  if (!token) return;
+  axios.defaults.headers.Authorization = `Bearer ${token}`;
+}
 
 export default all([
   takeLatest(types.LOGIN_REQUEST, loginRequest),
-  // takeLatest(types.PERSIST_REHYDRATE, persistRehydrate),
+  takeLatest(types.PERSIST_REHYDRATE, persistRehydrate),
 ]);
