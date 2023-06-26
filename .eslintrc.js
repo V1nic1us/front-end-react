@@ -31,5 +31,6 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'default-param-last': 0,
     'func-names': 0,
+    'react/prop-types': 0,
   },
 };
