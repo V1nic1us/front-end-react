@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
-import { get } from 'lodash';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
-import axios from '../../services/axios';
-import history from '../../services/history';
 import Loading from '../../components/Loading';
+import * as actions from '../../store/modules/auth/actions';
 
 export default function Login() {
+  /* eslint-disable */
+  const dispatch = useDispatch();
+  const id = useSelector((state) => state.auth.user.id);
+  const nomeStored = useSelector((state) => state.auth.user.nome);
+  const emailStored = useSelector((state) => state.auth.user.email);
+  const isLoadingStored = useSelector((state) => state.auth.user.isLoading);
+
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+
+    setNome(nomeStored);
+    setEmail(emailStored);
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,36 +41,29 @@ export default function Login() {
       toast.error('Esse email não é valido');
     }
 
-    if (password.length < 6 || password.length > 50) {
+    if (!id && (password.length < 6 || password.length > 50)) {
       formErrors = true;
       toast.error('Senha deve ter entre 6 e 50 caracteress');
     }
 
     if (formErrors) return;
 
-    setIsLoading(true);
-
-    try {
-      await axios.post('/users/', {
+    dispatch(
+      actions.registerRequest({
         nome,
-        password,
         email,
-      });
-      toast.success('Você foi cadastrado');
-      setIsLoading(false);
-      history.push('/login');
-    } catch (error) {
-      const errors = get(error, 'response.data.errors', []);
-      errors.map((element) => toast.error(element));
-      setIsLoading(false);
-    }
+        password,
+        id,
+        history,
+      })
+    );
   }
 
   return (
     <Container>
       <Loading isLoading={isLoading} />
 
-      <h1>Crie sua Conta</h1>
+      <h1>{!id ? 'Crie sua Conta' : 'Editar Dados'}</h1>
       <h1>
         {nome} {email} {password}
       </h1>
@@ -90,7 +96,7 @@ export default function Login() {
           />
         </label>
 
-        <button type="submit">Criar minha conta</button>
+        <button type="submit">{!id ? 'Criar minha conta' : 'Salvar'}</button>
       </Form>
     </Container>
   );
