@@ -9,6 +9,7 @@ import {
   ProfilePicture,
   StyledFaEdit,
   StyledFaWindowClose,
+  NovoAluno,
 } from './styled';
 import axios from '../../services/axios';
 import Loading from '../../components/Loading';
@@ -56,12 +57,13 @@ export default function Alunos() {
   };
 
   /* eslint-disable */
-  console.log(alunos);
 
   return (
     <Container>
       <Loading isLoading={isLoading} />
       <h1>Alunos</h1>
+
+      <NovoAluno to="/aluno/">NovoAluno</NovoAluno>
       <AlunoContainer>
         {alunos.length > 0
           ? alunos.map((aluno, index) => (
