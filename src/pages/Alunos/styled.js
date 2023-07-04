@@ -1,5 +1,6 @@
 import { FaEdit, FaWindowClose } from 'react-icons/fa';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const AlunoContainer = styled.div`
   margin-top: 20px;
@@ -28,4 +29,9 @@ export const StyledFaEdit = styled(FaEdit)`
 
 export const StyledFaWindowClose = styled(FaWindowClose)`
   color: #ee1111;
+`;
+
+export const NovoAluno = styled(Link)`
+  display: block;
+  padding: 15px 0;
 `;
